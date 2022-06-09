@@ -7,12 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 /**
@@ -22,7 +18,6 @@ import org.springframework.web.reactive.function.client.WebClient;
  */
 @SpringBootApplication
 @EnableJpaAuditing
-@EnableEurekaClient
 public class VehiclesApiApplication {
 
     public static void main(String[] args) {
@@ -70,20 +65,4 @@ public class VehiclesApiApplication {
         return WebClient.create(endpoint);
     }
 
-    @Configuration
-    class RestTemplateConfig {
-
-        /**
-         * Create a bean for restTemplate to call services
-         *
-         * @return created restTemplate object
-         */
-        @Bean
-
-        // Load balance between service instances running at different ports.
-        @LoadBalanced
-        public RestTemplate restTemplate() {
-            return new RestTemplate();
-        }
-    }
 }
