@@ -106,10 +106,16 @@ public class CarControllerTest {
          *   the whole list of vehicles. This should utilize the car from `getCar()`
          *   below (the vehicle will be the first in the list).
          */
+        Car car = getCar();
+        mvc.perform(
+                        post(new URI("/cars"))
+                                .content(json.write(car).getJson())
+                                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isCreated());
 
-        ResponseEntity<List> response =
-                this.testRestTemplate.getForEntity("http://localhost:"+ port + "/cars/", List.class);
-
+        ResponseEntity<?> response =
+                this.testRestTemplate.exchange("http://localhost:"+ port + "/cars/", HttpMethod.GET, new HttpEntity<>(""), String.class);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
     }
 
@@ -123,8 +129,15 @@ public class CarControllerTest {
          * TODO: Add a test to check that the `get` method works by calling
          *   a vehicle by ID. This should utilize the car from `getCar()` below.
          */
-        ResponseEntity<List> response =
-                this.testRestTemplate.getForEntity("http://localhost:"+ port + "/cars/1", List.class);
+        Car car = getCar();
+        mvc.perform(
+                        post(new URI("/cars"))
+                                .content(json.write(car).getJson())
+                                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isCreated());
+        ResponseEntity<?> response =
+                this.testRestTemplate.exchange("http://localhost:"+ port + "/cars/1", HttpMethod.GET, new HttpEntity<>(""), String.class);
 
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
     }
@@ -140,7 +153,16 @@ public class CarControllerTest {
          *   when the `delete` method is called from the Car Controller. This
          *   should utilize the car from `getCar()` below.
          */
-        ResponseEntity<?> response = this.testRestTemplate.exchange("http://localhost:"+ port + "/cars/1", HttpMethod.DELETE, new HttpEntity<>(""), String.class);
+        Car car = getCar();
+        mvc.perform(
+                        post(new URI("/cars"))
+                                .content(json.write(car).getJson())
+                                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isCreated());
+
+        ResponseEntity<?> response = this.testRestTemplate.exchange
+                ("http://localhost:"+ port + "/cars/1", HttpMethod.DELETE, new HttpEntity<>(""), String.class);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
     }
 

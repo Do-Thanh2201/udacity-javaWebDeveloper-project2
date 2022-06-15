@@ -7,6 +7,8 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import com.udacity.vehicles.domain.car.Car;
 import com.udacity.vehicles.service.CarNotFoundException;
 import com.udacity.vehicles.service.CarService;
+
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -98,8 +100,9 @@ class CarController {
             car.setId(null);
         }
         carService.save(car);
-        Resource<Car> resource = assembler.toResource(car);
-        return ResponseEntity.ok(resource);
+//        Resource<Car> resource = assembler.toResource(car);
+
+        return ResponseEntity.created(URI.create("/cars/" + car.getId())).build();
     }
 
     /**
