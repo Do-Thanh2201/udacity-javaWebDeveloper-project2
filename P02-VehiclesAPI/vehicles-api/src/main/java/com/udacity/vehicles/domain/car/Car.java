@@ -1,5 +1,6 @@
 package com.udacity.vehicles.domain.car;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.udacity.vehicles.domain.Condition;
 import com.udacity.vehicles.domain.Location;
 import java.time.LocalDateTime;
@@ -28,9 +29,11 @@ public class Car {
     @GeneratedValue
     private Long id;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
