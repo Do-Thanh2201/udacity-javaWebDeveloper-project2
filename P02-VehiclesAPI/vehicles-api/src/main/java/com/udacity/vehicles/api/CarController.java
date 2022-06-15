@@ -100,8 +100,6 @@ class CarController {
             car.setId(null);
         }
         carService.save(car);
-//        Resource<Car> resource = assembler.toResource(car);
-
         return ResponseEntity.created(URI.create("/cars/" + car.getId())).build();
     }
 

@@ -1,22 +1,28 @@
 package com.udacity.pricing.api;
 
-import com.udacity.pricing.domain.price.Price;
+import com.udacity.pricing.PricingServiceApplicationTests;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest()
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@WebMvcTest(PricingController.class)
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
+@ContextConfiguration(classes = PricingServiceApplicationTests.class)
 public class PricingControllerTest {
 
     @Autowired
@@ -28,9 +34,10 @@ public class PricingControllerTest {
          * TODO: Add a test to check that the `get` method works by calling
          *
          */
-        ResponseEntity<Price> response =
-                this.testRestTemplate.getForEntity("http://localhost:"+ 8082 + "/services/price/1", Price.class);
-
+        ResponseEntity<?> response =
+                this.testRestTemplate.exchange
+                        ("http://localhost:8082/services/price?vehicleId=1", HttpMethod.GET, new HttpEntity<>(""), String.class);
         response.hasBody();
     }
+
 }
