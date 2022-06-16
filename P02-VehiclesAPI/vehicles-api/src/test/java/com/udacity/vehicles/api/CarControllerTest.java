@@ -88,6 +88,44 @@ public class CarControllerTest {
                         .accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isCreated());
     }
+    /**
+     * Tests for successful update of a car in the system
+     * @throws Exception when car update fails in the system
+     */
+    @Test
+    public void updateCar() throws Exception {
+        Car car = getCar();
+        mvc.perform(
+                        post(new URI("/cars"))
+                                .content(json.write(car).getJson())
+                                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isCreated());
+
+        // Test update car
+        Car carUpdate = car;
+        Details detailsUpdate = new Details();
+        detailsUpdate.setManufacturer(car.getDetails().getManufacturer());
+        detailsUpdate.setModel("Impala Edit");
+        detailsUpdate.setMileage(32280);
+        detailsUpdate.setExternalColor("Black Edit");
+        detailsUpdate.setBody("sedan");
+        detailsUpdate.setEngine("3.6L V6");
+        detailsUpdate.setFuelType("Gasoline");
+        detailsUpdate.setModelYear(2018);
+        detailsUpdate.setProductionYear(2018);
+        detailsUpdate.setNumberOfDoors(4);
+
+        carUpdate.setDetails(detailsUpdate);
+        carUpdate.setCondition(Condition.NEW);
+
+        mvc.perform(
+                        post(new URI("/cars"))
+                                .content(json.write(carUpdate).getJson())
+                                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isCreated());
+    }
 
     /**
      * Tests if the read operation appropriately returns a list of vehicles.
